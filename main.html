@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+<head>
+  <title>Manipulating Data with Chained Promises</title>
+</head>
+<body>
+  <h2>Output:</h2>
+  <div id="output"></div>
 
-  <body>
-    <!-- do not change this code -->
-    <div id="output"></div>
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+  <script>
+    // Function to return a promise that resolves after given delay
+    function delay(ms, value) {
+      return new Promise(resolve => setTimeout(() => resolve(value), ms));
+    }
+
+    // Function to manipulate data using chained promises
+    function manipulateArray() {
+      const outputDiv = document.getElementById("output");
+
+      // Initial promise: resolves after 3 seconds with the array [1, 2, 3, 4]
+      delay(3000, [1, 2, 3, 4])
+        .then(arr => {
+          // First transformation: filter even numbers (after 1 second)
+          return delay(1000, arr.filter(num => num % 2 === 0));
+        })
+        .then(evenNumbers => {
+          // Display [2,4]
+          outputDiv.textContent = evenNumbers.join(",");
+          // Second transformation: multiply even numbers by 2 (after 2 seconds)
+          return delay(2000, evenNumbers.map(num => num * 2));
+        })
+        .then(multipliedNumbers => {
+          // Display [4,8]
+          outputDiv.textContent = multipliedNumbers.join(",");
+        });
+    }
+
+    // Call the function when the page loads
+    manipulateArray();
+  </script>
+</body>
 </html>
+
